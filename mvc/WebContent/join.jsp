@@ -44,7 +44,7 @@
 	    </div>
 	    <div class="form-group col-md-4">
 	      <label>성별</label>
-	      <select id="inputState" class="form-control">
+	      <select id="sex" class="form-control">
 	        <option selected>male</option>
 	        <option>female</option>
 	      </select>
