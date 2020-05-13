@@ -1,6 +1,7 @@
 package com.jsp.ex;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -27,6 +28,9 @@ public class send extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		resp.setContentType("text/html; charset=UTF-8");
+		req.setCharacterEncoding("UTF-8");
+		
 		Properties props = System.getProperties();
 		props.put("mail.smtp.user", "ehowl0402@gmail.com");
 		props.put("mail.smtp.host", "smtp.gmail.com");
@@ -44,6 +48,15 @@ public class send extends HttpServlet {
 		MimeMessage msg = new MimeMessage(session);
 		
 		try {
+			resp.setContentType("text/html;charset=UTF-8");
+			
+//			System.out.println(req.getParameter("id"));
+//			System.out.println(req.getParameter("pw"));
+//			System.out.println(req.getParameter("name"));
+//			System.out.println(req.getParameter("sex"));
+//			System.out.println(req.getParameter("code"));
+			String na =req.getParameter("name");
+			System.out.println(na);
 			// 보내는 시간
 			msg.setSentDate(new Date());
 			
@@ -53,18 +66,18 @@ public class send extends HttpServlet {
 			msg.setFrom(from);
 			
 			// 이메일 수신자
-			String email = req.getParameter("receiver"); //사용자가 입력한 이메일 받아오기
+			String email = req.getParameter("email"); //사용자가 입력한 이메일 받아오기
+			System.out.println(email);
 			InternetAddress to = new InternetAddress(email);
-			System.out.println(to);
 			msg.setRecipient(Message.RecipientType.TO, to);
 			
 			// 이메일 제목
 			msg.setSubject("비밀번호 인증번호", "UTF-8");
 			
 			// 이메일 내용
-			String code = req.getParameter("code_check"); // 인증번호 값 받기
+			String code = req.getParameter("code"); // 인증번호 값 받기
 			req.setAttribute("code", code);
-			msg.setText(code, "UTF-8");
+			msg.setText(na+"님 환영합니다. 인증번호 : "+code, "UTF-8");
 			
 			// 이메일 헤더
 			msg.setHeader("content-Type", "text/html");
@@ -80,7 +93,8 @@ public class send extends HttpServlet {
 			msg_e.printStackTrace();
 		}
 		
-		RequestDispatcher rd = req.getRequestDispatcher("/checkcode.jsp");
+		
+		RequestDispatcher rd = req.getRequestDispatcher("/email_check.jsp");
 		rd.forward(req, resp);
 		
 	}
