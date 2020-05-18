@@ -1,4 +1,4 @@
-package com.jsp.ex;
+package com.jsp.users;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -27,6 +27,7 @@ public class send extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		
 		resp.setContentType("text/html; charset=UTF-8");
 		req.setCharacterEncoding("UTF-8");
@@ -74,8 +75,9 @@ public class send extends HttpServlet {
 			// 이메일 제목
 			msg.setSubject("비밀번호 인증번호", "UTF-8");
 			
-			// 이메일 내용
-			String code = req.getParameter("code"); // 인증번호 값 받기
+			// 이메일 내용			
+			String code = new get_random().getRandom();// 인증번호 값 받기
+			System.out.println(code+" <- code");
 			req.setAttribute("code", code);
 			msg.setText(na+"님 환영합니다. 인증번호 : "+code, "UTF-8");
 			
@@ -116,6 +118,15 @@ class MyAuthentication extends Authenticator{
 	// 시스템에서 사용하는 인증정보
 	public PasswordAuthentication getPasswordAuthentication() {
 		return pa;
+	}
+}
+
+class get_random{
+	public String getRandom(){
+		int random=0;
+		random=(int)Math.floor((Math.random()*(99999-10000))+10000);
+		String result = String.valueOf(random);
+		return result;
 	}
 }
 
