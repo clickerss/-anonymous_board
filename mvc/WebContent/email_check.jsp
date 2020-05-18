@@ -19,25 +19,42 @@
 </head>
 <body>
 <script type="text/javascript">
-	var random = function(){
-		var ran = Math.floor(Math.random()*(99999-10000))+10000;
-		document.getElementById("code").value = ran
+	function check(){
+		var code = document.getElementById('code').value;
+		var c_check = document.getElementById('code_check').value;
+		alert(code+','+c_check);
+		if(code==c_check){
+			document.getElementById('code_check_result').value=1;
+			alert("인증이 완료 되었습니다!")
+			document.getElementById('check_button').disabled = 'disabled';
+			document.getElementById('code_button').disabled = 'disabled';
+			return
+		}else{
+			alert("인증번호가 올바르지 않습니다. 재확인 부탁드립니다.")
+			return
+		}
+	}
+	
+	function check2(){
+		var checked = document.getElementById('code_check_result').value;
+		
+		if(checked==1){
+			alert("가입 완료!")
+			document.emailCheckForm.action = "joinOK.jsp";
+			document.emailCheckForm.submit();
+		} else{
+			alert("이메일 인증을 하지 않으셨습니다. 이메일 인증 먼저 부탁드립니다!");
+		}
 	}
 </script>
-<%!
-	public int getRandom(){
-	int random=0;
-	random=(int)Math.floor((Math.random()*(99999-10000))+10000);
-	return random;
-}
-%> 
+
 <%
 	String id = request.getParameter("id");
 	String name = request.getParameter("name");
 	String pw = request.getParameter("pw");
 	String email = request.getParameter("email");
 	String sex = request.getParameter("sex");
-	String code = request.getParameter("code");
+	String code = (String)request.getAttribute("code");
 	System.out.println(name);
 %>
 <div class="jumbotron jumbotron-fluid" align="center">
@@ -47,7 +64,7 @@
   </div>
 </div>
 <div style="margin: 30px; padding-left: 30px; padding-right: 30px">
-	<form action="send" id="emailCheckForm" method="post" accept-charset="UTF-8">	  
+	<form id="emailCheckForm" name="emailCheckForm" method="post" accept-charset="UTF-8">	  
 	  <div class="form-row">
 	  	  <div class="form-group col-md-12">
 		  	  <div class="card shadow-sm p-3 mb-5 bg-white rounded">
@@ -66,17 +83,17 @@
 		  <input type="hidden" value="<%=pw%>" id="pw" name="pw">
 		  <input type="hidden" value="<%=email%>" id="email" name="email">
 		  <input type="hidden" value="<%=sex%>" id="sex" name="sex">
-		  <input type="hidden" value="<%=getRandom()%>" id="code" name="code">
+		  <input type="hidden" value="<%=code%>" id="code" name="code">
 		  
 		  <div class="form-group col-md">
-		  	<button class="btn btn-info" type="submit" >인증번호 발송</button>
-		  	<button class="btn btn-success">인증확인</button>
+		  	<button class="btn btn-info" type="submit" formaction="send" id="code_button">인증번호 발송</button>
+		  	<button class="btn btn-success" type="button" onclick="check()" id="check_button">인증확인</button>
 		  </div>
 	  </div>
 	  <hr>
 	  <div class="form-group">
-	  <input type="hidden" value="0">	    
-	  <button type="submit" formaction="#" class="btn btn-primary btn-block">다음단계</button>
+	  <input type="hidden" value="0" id="code_check_result">
+	  <button type="button" class="btn btn-primary btn-block" onclick="check2()">가입완료</button>
 	  </div>	  
 	</form>
 	
