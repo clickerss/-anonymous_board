@@ -55,7 +55,6 @@
 	 </div>
 	  <hr>
 	  <div class="form-group">
-	  <input type="hidden" value="0">   
 	  <button type="submit" formaction="email_check.jsp" class="btn btn-primary btn-block">다음단계</button>
 	  </div>
 	  
