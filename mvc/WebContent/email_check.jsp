@@ -39,7 +39,7 @@
 		var checked = document.getElementById('code_check_result').value;
 		
 		if(checked==1){
-			alert("가입 완료!")
+			alert("가입 축하드립니다! 메인페이지로 이동됩니다.")
 			document.emailCheckForm.action = "joinOK.jsp";
 			document.emailCheckForm.submit();
 		} else{

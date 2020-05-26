@@ -22,6 +22,7 @@ String sex = request.getParameter("sex");
 
 dao.insertUser(id, name, pwd, email, sex);
 System.out.print("insertUser 빠져나옴");
+response.sendRedirect("login_main.jsp");
 %>
 
 

@@ -1,6 +1,6 @@
 package com.jsp.users;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class UsersDTO {
 
@@ -10,6 +10,11 @@ public class UsersDTO {
 	private String email;
 	private String sex;
 	private Date date;
+	
+	public UsersDTO(String id) {
+		super();
+		this.id = id;
+	}
 	
 	public UsersDTO(String id, String name, String pwd, String email, String sex, Date date) {
 		super();
