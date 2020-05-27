@@ -1,0 +1,21 @@
+CREATE TABLE `board` (
+  `b_no` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(40) NOT NULL,
+  `contents` text NOT NULL,
+  `writer` varchar(30) NOT NULL,
+  `writer_name` varchar(30) NOT NULL,
+  `b_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `likes` int DEFAULT NULL,
+  `unlikes` int DEFAULT NULL,
+  PRIMARY KEY (`b_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `users` (
+  `ID` varchar(30) NOT NULL,
+  `NAME` varchar(30) NOT NULL,
+  `PWD` varchar(224) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `EMAIL` varchar(30) NOT NULL,
+  `SEX` char(10) NOT NULL,
+  `DATE` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
