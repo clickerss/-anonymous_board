@@ -20,7 +20,6 @@ function id_dup_check(){
 		cache : false,
 		data : $("#id").serialize(),
 		success : function(data){
-			alert("ajax 성공");
 			$("#is_id_dup").empty();
 			$("#is_id_dup").append(data);
 			document.getElementById("dupl_check_ok").value = 1;
@@ -111,7 +110,7 @@ function join_checked(){
 	 </div>
 	  <hr>
 	  <div class="form-group">
-	  <input type="text" id="dupl_check_ok" value="0">
+	  <input type="hidden" id="dupl_check_ok" value="0">
 	  <button type="button" class="btn btn-primary btn-block" onclick="join_checked()">다음단계</button>
 	  </div>
 	  

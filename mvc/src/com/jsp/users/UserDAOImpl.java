@@ -14,6 +14,7 @@ import com.jsp.conn.DBConnector;
 public class UserDAOImpl implements UsersDAO{
 	
 	DBConnector dataSource;
+	DBConnector connector = new DBConnector();
 	@Override
 	public void setDataSource(DBConnector dataSource) {
 		this.dataSource = dataSource;
@@ -66,7 +67,7 @@ public class UserDAOImpl implements UsersDAO{
 		System.out.println("userchk 까지 왔음");
 
 		try {
-			conn = dataSource.getConnection();
+			conn = connector.getConnection();
 			System.out.println("연결됨");
 			String sql = "select id, name, SEX, date, email from users where id = ? and PWD = SHA2(?, 224);";
 			
@@ -154,13 +155,13 @@ public class UserDAOImpl implements UsersDAO{
 		
 		try {
 			conn = dataSource.getConnection();
-			System.out.println("연결됨");
 			String sql = "select * from users where id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			System.out.println("excute 까지 성공");
+			System.out.println(id);
 			if(rs.next()) {
 				System.out.println("중복임");
 				isdup = true;

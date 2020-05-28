@@ -46,6 +46,10 @@
 			alert("이메일 인증을 하지 않으셨습니다. 이메일 인증 먼저 부탁드립니다!");
 		}
 	}
+	
+	function alertt() {
+		alert("메일이 방송되었습니다. 장시간 메일이 오지 않을 경우 다시한번 클릭하여 재전송 부탁드립니다.")
+	}
 </script>
 
 <%
@@ -86,7 +90,7 @@
 		  <input type="hidden" value="<%=code%>" id="code" name="code">
 		  
 		  <div class="form-group col-md">
-		  	<button class="btn btn-info" type="submit" formaction="send" id="code_button">인증번호 발송</button>
+		  	<button class="btn btn-info" type="submit" formaction="send" id="code_button" onclick="alertt()">인증번호 발송</button>
 		  	<button class="btn btn-success" type="button" onclick="check()" id="check_button">인증확인</button>
 		  </div>
 	  </div>
@@ -96,13 +100,6 @@
 	  <button type="button" class="btn btn-primary btn-block" onclick="check2()">가입완료</button>
 	  </div>	  
 	</form>
-	
-	<%=id %>
-	<%=name %>
-	<%=pw %>
-	<%=email %>
-	<%=sex %>
-	<%=code %>
 </div>
 
 </body>
