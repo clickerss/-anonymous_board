@@ -11,10 +11,8 @@ public class test {
 		String writer = "tester";
 		String writer_name = "testman";
 				
-		for(int i = 47; i<51; i++) {
-			String a = "test"+i;
-			dao.insertPost(a, contents, writer, writer_name);
-		}
+		// System.out.println(dao.getPost_all());
+		
 		
 		
 	}

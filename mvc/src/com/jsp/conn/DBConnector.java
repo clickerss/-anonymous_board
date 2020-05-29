@@ -18,7 +18,7 @@ public class DBConnector {
             Class.forName("com.mysql.jdbc.Driver");
 
             // 2. �뿰寃고븯湲�
-            String url = "jdbc:mysql://localhost:3306/testdb?serverTimezone=Asia/Seoul&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/mvc?serverTimezone=Asia/Seoul&useSSL=false";
             conn = DriverManager.getConnection(url, "root", "12345");
             System.out.println("db연결 성공");
             return conn;
