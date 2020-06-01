@@ -11,14 +11,59 @@
 String name = (String)session.getAttribute("name");
 BoardDAOImpl dao = new BoardDAOImpl();
 
-int totalPost = dao.getCount();
-int postPerPg = 10;
-int totalPg;		
-int pgPerBlock = 4;
+int now_pg;
+int postPerPg=5;
+int now_block;
 int totalBlock;
-int now_pg = 0;
-int now_block = 0;
-int last_block_pg;
+int totalPg;
+int pgPerBlock = 4;
+int totalPost = dao.getCount();
+
+if(totalPost%postPerPg > 0){
+	totalPg = totalPost/postPerPg +1;
+}else{
+	totalPg = totalPost/postPerPg;
+}
+if(totalPg%pgPerBlock > 0){
+	totalBlock = totalPg/pgPerBlock+1;
+}else{
+	totalBlock = totalPg/pgPerBlock;
+}
+
+if(request.getParameter("now_pg") != null){
+	now_pg = Integer.parseInt(request.getParameter("now_pg"));
+}else{
+	now_pg = 0;
+}
+if(request.getParameter("postPerPg") != null){
+	postPerPg = Integer.parseInt(request.getParameter("postPerPg"));
+}
+if(request.getParameter("now_block") != null){
+	now_block = Integer.parseInt(request.getParameter("now_block"));
+
+	if(Integer.parseInt(request.getParameter("now_block")) < 0){
+		now_block = 0;
+	}
+	if(Integer.parseInt(request.getParameter("now_block")) >= totalBlock-1){
+		now_block = totalBlock-1;
+	}
+}else{
+	now_block=0;
+}
+int back = now_block-1;
+int forward = now_block+1;
+if(forward > totalBlock-1){
+	forward = totalBlock-1;
+}
+
+
+		
+
+
+List<BoardDTO> a = dao.getPost_all(now_pg, pgPerBlock);
+
+List<Integer> pages = new ArrayList<>();
+ArrayList<List<Integer>> blocks = new ArrayList<List<Integer>>();
 
 // 전체 글 수에서 페이지당 글수를 나눠서 0으로 딱 떨어지면 나눈값이 totalPg
 // 만약 나눴을때 값이 남을 경우 나눈값+1 이 totalPg
@@ -28,30 +73,11 @@ if(totalPost%postPerPg > 0){
 	totalPg = totalPost/postPerPg;
 }
 
-// 위의 로직의 논리를 페이지와 페이지블록에 적용해서
-// totalBlock을 구하는 로직
-if(totalPg%pgPerBlock > 0){
-	totalBlock = totalPg/pgPerBlock+1;
-}else{
-	totalBlock = totalPg/pgPerBlock;
-}
-
 // 블록당 페이지수보다 전체 페이지수가 적을경우
 // 블록당 페이지수를 전체페이지수로 대입
 if(totalPg<pgPerBlock){
 	pgPerBlock = totalPg;
 }
-
-
-// 마지막 블록의 페이지수를 정의하는 로직
-if(totalPg%pgPerBlock != 0){
-	last_block_pg = totalPg%pgPerBlock;
-}else{
-	last_block_pg = pgPerBlock;
-}
-
-List<Integer> pages = new ArrayList<>();
-ArrayList<List<Integer>> blocks = new ArrayList<List<Integer>>();
 
 for(int i=0; i<totalPg; i++){
 	pages.add(i);
@@ -71,13 +97,9 @@ while(true){
 		break;
 	}	
 	count++;
-}
-for(int i=0; i<blocks.size(); i++){
-	System.out.println(blocks.get(i));
-	for(int j=0; j<blocks.get(i).size(); j++){
-		System.out.println(blocks.get(i).get(j));
-	}
-}
+} 
+
+
 %>
 
 <!DOCTYPE html>
@@ -166,8 +188,8 @@ if(name == null){
 		    </tr>
  			</thead>
  			<tbody>
-			<%-- <% 					
-				List<BoardDTO> list = dao.getPost_all();
+			<% 					
+				List<BoardDTO> list = dao.getPost_all(now_pg, postPerPg);
 				SimpleDateFormat format1 = new SimpleDateFormat("h:mm a");
 				SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -177,6 +199,7 @@ if(name == null){
  					System.out.println(bdate);
  					long calDate = now.getTime()-bdate.getTime();
  					long calDateDays = calDate / (1000*60*60*24);
+ 					System.out.println(calDate);
  					String to = "";
  					if(calDateDays < 1){
  						to = format1.format(bdate);
@@ -187,28 +210,28 @@ if(name == null){
  			%>		
   				<tr>
   					<td><%=list.get(i).getB_no() %></td>
-	  				<td><%=list.get(i).getTitle()%></td>
+	  				<td><a href="post_view.jsp?b_no=<%=list.get(i).getB_no()%>"><%=list.get(i).getTitle()%></a></td>
 	  				<td style="text-align: center;"><%=list.get(i).getLikes()%></td>
-	  				<td style="text-align: center;"><%=list.get(i).getUnlikes()%></td>
+	  				<td style="text-align: center;"><%=list.get(i).getCmt()%></td>
 	  				<td style="text-align: center;"><%=list.get(i).getWriter_name()%></td>
 	  				<td style="text-align: center;"><%=to%></td>
 	  			</tr>
   			
-			<%	}%> --%>
+			<%	}%>
 			</tbody>
 	</table>
 </div>
 <nav aria-label="Page navigation example" >
 	<ul class="pagination justify-content-center">	
-		<li><button class="page-link">◀</button></li>	
+		<li><a class="page-link" href="board.jsp?now_block=<%=back%>">◀</a></li>	
 		<%
 			for(int i=0; i<blocks.get(now_block).size(); i++){
 		%>
-			<li class="page-item"><button class="page-link" value=""><%=blocks.get(now_block).get(i)+1 %></button></li>
+			<li class="page-item"><a class="page-link" href="board.jsp?now_block=<%=now_block%>&now_pg=<%=blocks.get(now_block).get(i)%>"><%=blocks.get(now_block).get(i)+1 %></a></li>
 		<%
 			}
 		%>
-		<li><button class="page-link">▶</button></li>	
+		<li><a class="page-link" href="board.jsp?now_block=<%=forward%>&now_pg=<%=blocks.get(forward).get(0)%>">▶</a></li>	
 	</ul>		
 </nav>
 </body>

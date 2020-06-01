@@ -12,6 +12,8 @@ public class BoardDTO {
 	private Date b_date;
 	private int likes;
 	private int unlikes;
+	private int cmt;
+	private int vw;
 	
 	public int getB_no() {
 		return b_no;
@@ -60,6 +62,18 @@ public class BoardDTO {
 	}
 	public void setUnlikes(int unlikes) {
 		this.unlikes = unlikes;
+	}
+	public int getCmt() {
+		return cmt;
+	}
+	public void setCmt(int cmt) {
+		this.cmt = cmt;
+	}
+	public int getVw() {
+		return vw;
+	}
+	public void setVw(int view) {
+		this.vw = view;
 	}
 	
 	

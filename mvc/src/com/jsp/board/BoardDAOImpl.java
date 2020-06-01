@@ -107,9 +107,7 @@ public class BoardDAOImpl implements BoardDAO{
 		try {
 			conn = dataSource.getConnection();
 			//String sql = "select b_no, title, contents, writer_name, b_date, likes, unlikes from board order by b_no desc";
-			String sql = "select bd.*" + 
-					"from (select * from board order by b_no desc) as bd" + 
-					"limit ?, ?";
+			String sql = "select * from board_all limit ?,?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, posts);
 			pstmt.setInt(2, postPerPg);
@@ -122,8 +120,9 @@ public class BoardDAOImpl implements BoardDAO{
 				System.out.println(contents);
 				String writer_name = rs.getString("writer_name");
 				Date b_date = transFomat.parse(rs.getString("b_date"));
-				int likes = rs.getInt("likes");
-				int unlikes = rs.getInt("unlikes");
+				int likes = rs.getInt("cnt_lk");
+				int unlikes = rs.getInt("cnt_unlk");
+				int cmt = rs.getInt("cmt");
 				
 				dto.setB_no(b_no);
 				dto.setTitle(title);
@@ -132,6 +131,7 @@ public class BoardDAOImpl implements BoardDAO{
 				dto.setB_date(b_date);
 				dto.setLikes(likes);
 				dto.setUnlikes(unlikes);
+				dto.setCmt(cmt);
 				
 				list.add(dto);				
 			}
@@ -150,10 +150,51 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public List<BoardDTO> getPost_bno(int b_no) {
-		return null;
-
-		
+	public BoardDTO getPost_bno(int b_no) {
+		Connection conn = null;		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BoardDTO dto = new BoardDTO();
+		System.out.println("getPast_all 왓음");
+		SimpleDateFormat transFomat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		try {
+			conn = dataSource.getConnection();
+			//String sql = "select b_no, title, contents, writer_name, b_date, likes, unlikes from board order by b_no desc";
+			String sql = "select * from board_all where b_no = ?";
+			pstmt = conn.prepareStatement(sql);	
+			pstmt.setInt(1, b_no);
+			rs = pstmt.executeQuery();			
+			if(rs.next()) {				
+				String title = rs.getString("title");
+				String contents = rs.getString("contents");
+				String writer_name = rs.getString("writer_name");
+				Date b_date = transFomat.parse(rs.getString("b_date"));
+				int vw = rs.getInt("vw");
+				int cmt = rs.getInt("cmt");
+				int cnt_lk = rs.getInt("cnt_lk");
+				int cnt_unlk = rs.getInt("cnt_unlk");
+				
+				dto.setB_no(b_no);
+				dto.setTitle(title);
+				dto.setContents(contents);
+				dto.setWriter_name(writer_name);
+				dto.setB_date(b_date);
+				dto.setCmt(cmt);
+				dto.setLikes(cnt_lk);
+				dto.setUnlikes(cnt_unlk);				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dto;
 	}
 
 	@Override

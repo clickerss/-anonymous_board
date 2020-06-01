@@ -7,20 +7,54 @@
 <%
 String name = (String)session.getAttribute("name");
 BoardDAOImpl dao = new BoardDAOImpl();
-int now_pg=0;
-int postPerPg=10;
-
-/* if(request.getParameter("now_pg") != null){
-	now_pg = Integer.parseInt(request.getParameter("now_pg"));
-}
-if(request.getParameter("pgPerBlock") != null){
-	now_pg = Integer.parseInt(request.getParameter("pgPerBlock"));
-}
-
+int now_pg;
+int postPerPg=5;
+int now_block;
+int totalBlock;
+int totalPg;
+int pgPerBlock = 4;
 int totalPost = dao.getCount();
-int postPerPg = Integer.parseInt(request.getParameter("postPerPg"));
-int totalPg;		
-int now_block = Integer.parseInt(request.getParameter("now_block"));
+
+if(totalPost%postPerPg > 0){
+	totalPg = totalPost/postPerPg +1;
+}else{
+	totalPg = totalPost/postPerPg;
+}
+if(totalPg%pgPerBlock > 0){
+	totalBlock = totalPg/pgPerBlock+1;
+}else{
+	totalBlock = totalPg/pgPerBlock;
+}
+
+if(request.getParameter("now_pg") != null){
+	now_pg = Integer.parseInt(request.getParameter("now_pg"));
+}else{
+	now_pg = 0;
+}
+if(request.getParameter("postPerPg") != null){
+	postPerPg = Integer.parseInt(request.getParameter("postPerPg"));
+}
+if(request.getParameter("now_block") != null){
+	now_block = Integer.parseInt(request.getParameter("now_block"));
+
+	if(Integer.parseInt(request.getParameter("now_block")) < 0){
+		now_block = 0;
+	}
+	if(Integer.parseInt(request.getParameter("now_block")) >= totalBlock-1){
+		now_block = totalBlock-1;
+	}
+}else{
+	now_block=0;
+}
+int back = now_block-1;
+int forward = now_block+1;
+if(forward > totalBlock-1){
+	forward = totalBlock-1;
+}
+
+
+		
+
 
 List<BoardDTO> a = dao.getPost_all(now_pg, pgPerBlock);
 
@@ -59,7 +93,7 @@ while(true){
 		break;
 	}	
 	count++;
-} */
+} 
 
 
 %>
@@ -89,15 +123,15 @@ while(true){
 				List<BoardDTO> list = dao.getPost_all(now_pg, postPerPg);
 				for(int i=0; i<list.size(); i++){
 			%>
-				<%-- <tr>
+				<tr>
 					<td><%=list.get(i).getB_no()%></td>
 					<td><%=list.get(i).getTitle()%></td>
 					<td style="text-align: center;"><%=list.get(i).getLikes()%></td>
 					<td style="text-align: center;"><%=list.get(i).getUnlikes()%></td>
 					<td style="text-align: center;"><%=list.get(i).getWriter_name()%></td>
 					<td style="text-align: center;"><%=list.get(i).getB_date()%></td>
-				</tr> --%>
-				asdf
+				</tr>
+				
 			<%
 				}
 			%>
@@ -105,18 +139,23 @@ while(true){
 		</tbody>
 	</table>
 </div>
-<%-- <nav aria-label="Page navigation example" >
+<nav aria-label="Page navigation example" >
 	<ul class="pagination justify-content-center">	
-		<li><button class="page-link">◀</button></li>	
+		<li><a class="page-link" href="list_test.jsp?now_block=<%=back%>">◀</a></li>	
 		<%
 			for(int i=0; i<blocks.get(now_block).size(); i++){
 		%>
-			<li class="page-item"><a class="page-link" href="list_test.jsp?now_pg=<%=i%>"><%=blocks.get(now_block).get(i)+1 %></a></li>
+			<li class="page-item"><a class="page-link" href="list_test.jsp?now_block=<%=now_block%>&now_pg=<%=blocks.get(now_block).get(i)%>"><%=blocks.get(now_block).get(i)+1 %></a></li>
 		<%
 			}
 		%>
-		<li><button class="page-link">▶</button></li>	
+		<li><a class="page-link" href="list_test.jsp?now_block=<%=forward%>&now_pg=<%=blocks.get(forward).get(0)%>">▶</a></li>	
 	</ul>		
-</nav> --%>
+</nav>
+[<%=blocks.get(0).get(0)%>]
+[<%=blocks.get(1).get(0)%>]
+[<%=blocks.get(2).get(0)%>]
+<%=totalPg %>
+<%=totalBlock %>
 </body>
 </html>

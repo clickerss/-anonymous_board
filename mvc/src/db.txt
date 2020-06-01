@@ -1,0 +1,65 @@
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+게시글, 유저, 좋아요, 싫어요, 댓글 테이블 생성
+
+CREATE TABLE `board` (
+  `b_no` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(40) NOT NULL,
+  `contents` text NOT NULL,
+  `writer` varchar(30) NOT NULL,
+  `writer_name` varchar(30) NOT NULL,
+  `b_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`b_no`)
+)
+
+CREATE TABLE `users` (
+  `ID` varchar(30) NOT NULL,
+  `NAME` varchar(30) NOT NULL,
+  `PWD` varchar(224) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `EMAIL` varchar(30) NOT NULL,
+  `SEX` char(10) NOT NULL,
+  `DATE` datetime DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE TABLE `liketable` (
+  `b_no` int NOT NULL,
+  `id` varchar(30) NOT NULL
+)
+
+CREATE TABLE `unliketable` (
+  `b_no` int NOT NULL,
+  `id` varchar(30) NOT NULL
+)
+
+CREATE TABLE `comment` (
+  `b_no` int NOT NULL,
+  `writer` varchar(30) NOT NULL,
+  `writer_name` varchar(30) NOT NULL,
+  `content` varchar(100) NOT NULL,
+  `c_date` datetime DEFAULT CURRENT_TIMESTAMP
+)
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+view 생성
+
+create view board_all as
+select bd.*, ifnull(views.vw,0) as vw 
+from (
+	select bd.*, ifnull(cmt.cmt,0) as cmt 
+	from (
+		select bd.*, ifnull(unlk.cnt_unlk,0) as cnt_unlk 
+		from (
+		select bd.*, ifnull(lk.cnt_lk,0) as cnt_lk 
+		from (select * from board order by b_no desc) as bd 
+		left join (select b_no, count(*) as cnt_lk from liketable group by b_no) as lk
+		on bd.b_no = lk.b_no
+		) as bd 
+		left join (select b_no, count(*) as cnt_unlk from unliketable group by b_no) as unlk
+		on bd.b_no = unlk.b_no
+	) as bd 
+	left join (select b_no, count(*) as cmt from comment group by b_no) as cmt
+	on bd.b_no = cmt.b_no
+	order by b_no desc
+) as bd 
+left join (select b_no, count(*) as vw from views group by b_no) as views
+on bd.b_no = views.b_no
+order by b_no desc;
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
