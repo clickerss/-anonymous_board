@@ -1,6 +1,7 @@
 package com.jsp.control;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.jsp.board.BoardDAOImpl;
+import com.jsp.board.BoardDTO;
 
 /**
  * Servlet implementation class getPost
@@ -43,11 +47,16 @@ public class getPost extends HttpServlet {
 		BoardDAOImpl dao = new BoardDAOImpl();
 
 		int totalPost = dao.getCount();
-		int postPerPg = 10;
+		int postPerPg = Integer.parseInt(request.getParameter("postPerPg"));;
 		int totalPg;		
 		int pgPerBlock = 4;
 		int now_pg = Integer.parseInt(request.getParameter("now_pg")); 
 		int now_block = Integer.parseInt(request.getParameter("now_block"));;
+		
+		List<BoardDTO> a = dao.getPost_all(now_pg, pgPerBlock);
+		PrintWriter out = response.getWriter();
+		JSONObject obj = new JSONObject();
+		
 		List<Integer> pages = new ArrayList<>();
 		ArrayList<List<Integer>> blocks = new ArrayList<List<Integer>>();
 

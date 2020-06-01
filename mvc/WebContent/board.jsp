@@ -166,7 +166,7 @@ if(name == null){
 		    </tr>
  			</thead>
  			<tbody>
-			<% 					
+			<%-- <% 					
 				List<BoardDTO> list = dao.getPost_all();
 				SimpleDateFormat format1 = new SimpleDateFormat("h:mm a");
 				SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -194,7 +194,7 @@ if(name == null){
 	  				<td style="text-align: center;"><%=to%></td>
 	  			</tr>
   			
-			<%	}%>
+			<%	}%> --%>
 			</tbody>
 	</table>
 </div>

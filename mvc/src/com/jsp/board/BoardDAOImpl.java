@@ -96,17 +96,23 @@ public class BoardDAOImpl implements BoardDAO{
 		return count;
 	}
 	@Override
-	public List<BoardDTO> getPost_all() {
-		Connection conn = null;
+	public List<BoardDTO> getPost_all(int now_pg, int postPerPg) {
+		Connection conn = null;		
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;		
+		ResultSet rs = null;
+		int posts = now_pg*postPerPg;
 		List<BoardDTO> list = new ArrayList<>();
 		System.out.println("getPast_all 왓음");
 		SimpleDateFormat transFomat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
 		try {
 			conn = dataSource.getConnection();
-			String sql = "select b_no, title, contents, writer_name, b_date, likes, unlikes from board order by b_no desc";
+			//String sql = "select b_no, title, contents, writer_name, b_date, likes, unlikes from board order by b_no desc";
+			String sql = "select bd.*" + 
+					"from (select * from board order by b_no desc) as bd" + 
+					"limit ?, ?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, posts);
+			pstmt.setInt(2, postPerPg);
 			rs = pstmt.executeQuery();			
 			while(rs.next()) {
 				BoardDTO dto = new BoardDTO();
