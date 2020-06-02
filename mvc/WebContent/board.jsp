@@ -109,11 +109,23 @@ while(true){
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>부트스트랩 기본 틀</title>
+<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/custom.css" rel="stylesheet">
 <script
     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
+<style type="text/css">
+.jg{font-family: 'Jeju Gothic', sans-serif;}
+.jm{font-family: 'Jeju Myeongjo', serif;}
+.ng{font-family: 'Nanum Gothic', sans-serif;}
+.pg{font-family: 'Orbitron', sans-serif;}
+.tl{font-family: 'Poor Story', cursive;}
+</style>
 <script type="text/javascript">
 function login_check() {
 	$.ajax({
@@ -136,17 +148,17 @@ function login_check() {
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">익명 게시판</a>
+  <a class="navbar-brand ng" href="#"><b>익명 게시판</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="login_main.jsp">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">게시판</a>
+        <a class="nav-link" href="board.jsp">게시판</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">내 정보</a>
@@ -165,7 +177,7 @@ if(name == null){
 	sb.append("</div>");
 }else{
 	sb.append("<div id=\"logout\">");
-	sb.append(name+"님 반갑습니다!");
+	sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
 	sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
 	sb.append("</div>");
 }
@@ -179,12 +191,12 @@ if(name == null){
 	<table class="table table-sm">
  			<thead>
    			<tr>
-		      <th style="width: 5%">#</th>
-		      <th style="width: 40%; text-align: center;">title</th>
-		      <th style="width: 5%; text-align: center;">like</th>
-		      <th style="width: 5%; text-align: center;">cmt</th>
-		      <th style="width: 20%; text-align: center;">writer</th>
-		      <th style="width: 25%; text-align: center;">date</th>
+		      <th class="tl" style="width: 5%">#</th>
+		      <th class="tl" style="width: 40%; text-align: center;">title</th>
+		      <th class="tl" style="width: 5%; text-align: center;">like</th>
+		      <th class="tl" style="width: 5%; text-align: center;">cmt</th>
+		      <th class="tl" style="width: 20%; text-align: center;">writer</th>
+		      <th class="tl" style="width: 25%; text-align: center;">date</th>
 		    </tr>
  			</thead>
  			<tbody>
@@ -196,12 +208,11 @@ if(name == null){
  				for(int i=0; i<list.size(); i++){
  					Date now = new Date();
  					Date bdate = list.get(i).getB_date();
- 					System.out.println(bdate);
- 					long calDate = now.getTime()-bdate.getTime();
- 					long calDateDays = calDate / (1000*60*60*24);
- 					System.out.println(calDate);
+ 					String n = format2.format(now);
+ 					String b = format2.format(bdate);
+ 					
  					String to = "";
- 					if(calDateDays < 1){
+ 					if(n.equals(b)){
  						to = format1.format(bdate);
  					}else{
  						to = format2.format(bdate);
@@ -210,16 +221,19 @@ if(name == null){
  			%>		
   				<tr>
   					<td><%=list.get(i).getB_no() %></td>
-	  				<td><a href="post_view.jsp?b_no=<%=list.get(i).getB_no()%>"><%=list.get(i).getTitle()%></a></td>
-	  				<td style="text-align: center;"><%=list.get(i).getLikes()%></td>
-	  				<td style="text-align: center;"><%=list.get(i).getCmt()%></td>
-	  				<td style="text-align: center;"><%=list.get(i).getWriter_name()%></td>
-	  				<td style="text-align: center;"><%=to%></td>
+	  				<td><a class="tl" href="post_view.jsp?b_no=<%=list.get(i).getB_no()%>"><%=list.get(i).getTitle()%></a></td>
+	  				<td class="tl" style="text-align: center;"><%=list.get(i).getLikes()%></td>
+	  				<td class="tl" style="text-align: center;"><%=list.get(i).getCmt()%></td>
+	  				<td class="tl" style="text-align: center;"><%=list.get(i).getWriter_name()%></td>
+	  				<td class="tl" style="text-align: center;"><%=to%></td>
 	  			</tr>
   			
 			<%	}%>
 			</tbody>
 	</table>
+</div>
+<div align="right">
+	<button class="btn btn-primary btn-sm" onclick="location.href = 'insert_post.jsp'"><font class="ng">글쓰기</font></button>
 </div>
 <nav aria-label="Page navigation example" >
 	<ul class="pagination justify-content-center">	
@@ -234,6 +248,40 @@ if(name == null){
 		<li><a class="page-link" href="board.jsp?now_block=<%=forward%>&now_pg=<%=blocks.get(forward).get(0)%>">▶</a></li>	
 	</ul>		
 </nav>
+
+<div class="modal fade" id="layerpop" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+      	<!-- header title -->
+        <h4 class="modal-title">Login</h4>
+        <!-- 닫기(x) 버튼 -->
+        <button type="button" class="close" data-dismiss="modal">×</button>        
+      </div>
+      <form id="loginForm" name="loginForm" method="post" accept-charset="UTF-8">
+	    <div class="modal-body">  
+	    	<div class="form-row">
+	    		<div class="form-group col-md-12">
+	    			<label>ID</label>
+	    			<input type="text" class="form-control" id="id" name="id" placeholder="아이디">
+	    		</div>
+	    		<div class="form-group col-md-12">
+	    			<label>PassWord</label>
+	    			<input type="password" class="form-control" id="pwd" name="pwd" placeholder="비밀번호">
+	    		</div>
+	    	</div>          
+	    </div>
+	    <div class="modal-footer">	      
+	      <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+	      <a class="btn btn-outline-success" href="join.jsp" role="button">회원가입</a>
+	      <button type="button" class="btn btn-primary" onclick="login_check()">로그인</button>
+      	</div>
+      </form>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
 

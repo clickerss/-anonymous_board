@@ -3,15 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%
+response.setHeader("Cache-Control", "no-store");
+response.setHeader("Pragma","no-cache");
+response.setDateHeader("Expires",0);
+if(request.getProtocol().equals("HTTP/1.1"))
+	response.setHeader("Cache-Control","no-cache");
+%>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 <%
-String name = (String)session.getAttribute("name");
-System.out.println(name);
 session.invalidate();
-System.out.println(name);
 %>
 
 <script type="text/javascript">

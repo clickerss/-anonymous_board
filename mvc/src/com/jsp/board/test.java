@@ -10,14 +10,15 @@ public class test {
 		String writer = "tester";
 		String writer_name = "testman";
 		
-		int now_pg = 0;
-		int postPerPg = 10;
+		int b_no = 50;
+		String id = "test";
+		
+		dao.updateLk(b_no, id);
 		
 		
 		
-		// System.out.println(dao.getPost_all());
-		List<BoardDTO> list = dao.getPost_all(now_pg, postPerPg);
-		System.out.println(list.get(0).getContents()); 
+		
+		
 		
 		
 	}

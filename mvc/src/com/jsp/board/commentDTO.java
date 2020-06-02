@@ -9,6 +9,7 @@ public class commentDTO {
 	private String writer_name;
 	private String content;
 	private Date c_date;
+	private int c_no;
 	
 	public int getB_no() {
 		return b_no;
@@ -39,6 +40,12 @@ public class commentDTO {
 	}
 	public void setC_date(Date c_date) {
 		this.c_date = c_date;
+	}
+	public int getC_no() {
+		return c_no;
+	}
+	public void setC_no(int c_no) {
+		this.c_no = c_no;
 	}	
 	
 	

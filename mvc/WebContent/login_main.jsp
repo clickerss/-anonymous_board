@@ -11,11 +11,23 @@ String name = (String)session.getAttribute("name");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>부트스트랩 기본 틀</title>
+<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/custom.css" rel="stylesheet">
 <script
     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
+<style type="text/css">
+.jg{font-family: 'Jeju Gothic', sans-serif;}
+.jm{font-family: 'Jeju Myeongjo', serif;}
+.ng{font-family: 'Nanum Gothic', sans-serif;}
+.pg{font-family: 'Orbitron', sans-serif;}
+.tl{font-family: 'Poor Story', cursive;}
+</style>
 <script type="text/javascript">
 function login_check() {
 	$.ajax({
@@ -38,7 +50,7 @@ function login_check() {
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="#">익명 게시판</a>
+	  <a class="navbar-brand ng" href="#"><b>익명 게시판</b></a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -48,7 +60,7 @@ function login_check() {
 	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">게시판</a>
+	        <a class="nav-link" href="board.jsp">게시판</a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="#">내 정보</a>
@@ -67,7 +79,7 @@ function login_check() {
 		sb.append("</div>");
 	}else{
 		sb.append("<div id=\"logout\">");
-		sb.append(name+"님 반갑습니다!");
+		sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
 		sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
 		sb.append("</div>");
 	}
@@ -80,7 +92,7 @@ function login_check() {
 	<div class="jumbotron">
 		<div align="center">
 		  <blockquote class="blockquote text-center">
-  			<p class="mb-0">We are Anoymous. We are Legion We do not forgive We do not forget Expect us.</p>
+  			<p class="mb-0 pg">We are Anoymous.<br>We are Legion We do not forgive We do not forget<br>Expect us.</p>
   			<footer class="blockquote-footer">Someone anonymous</footer>
 		  </blockquote>
 		  <div id="face_div">
@@ -103,7 +115,7 @@ function login_check() {
 	</div>
   </div>
   
-  <div class="modal fade" id="layerpop" >
+<div class="modal fade" id="layerpop" >
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- header -->
