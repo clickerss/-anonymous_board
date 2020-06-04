@@ -7,9 +7,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+request.setCharacterEncoding("UTF-8");
+
 String name = (String)session.getAttribute("name");
 String id = (String)session.getAttribute("id");
 BoardDAOImpl dao = new BoardDAOImpl();
+
+int b_no = Integer.parseInt(request.getParameter("b_no")); 
+String title = request.getParameter("title");
+String contents = request.getParameter("contents");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -60,8 +66,8 @@ function login_check() {
 	return;
 }
 
-function insertCheck_post() {
-	confirm("등록 하시겠습니까?");
+function modifyCheck_post() {
+	confirm("수정 하시겠습니까?");
 	if($("#title").val() == ""){
 		alert("제목을 입력해주세요")
 	} else if($("#contents").val() == ""){
@@ -73,13 +79,13 @@ function insertCheck_post() {
 	}else{
 		$.ajax({
 			type : "post",
-			url : "insertPost",
+			url : "modifyPost",
 			cache : false,
-			data : $("#insertPostForm").serialize(),
+			data : $("#modifyPostForm").serialize(),
 			success : function(){
 				alert("ajax 성공")
-				alert("성공적으로 등록 되었습니다.")
-				location.replace("board.jsp");
+				alert("성공적으로 변경 되었습니다.")
+				location.replace = document.referrer;
 			}
 		});
 		return;
@@ -131,22 +137,23 @@ if(name == null){
 </div>
 <br>
 
-<form id="insertPostForm">
+<form id="modifyPostForm" name="modifyPostForm">
 	<div class="form-group" style="width: 85%; margin-left: 7%; margin-right: 25%;">
 		<label>제목</label>
-		<input type="text" class="form-control" id="title" name="title" placeholder="35자 이내로 작성해주세요">
+		<input type="text" class="form-control" id="title" name="title" value="<%=title%>">
 	</div>
 	<div class="form-group" style="width: 85%; margin-left: 7%; margin-right: 25%;">
 		<label>내용</label>
-		<textarea rows="15" class="form-control" id="contents" name="contents" placeholder="5000자 이내로 작성해주세요"></textarea>
+		<textarea rows="15" class="form-control" id="contents" name="contents"><%=contents%></textarea>
 	</div>
 	<div class="form-group" align="right" style="margin-right: 8%;">
 		<input type="hidden" value="<%=id%>" id="writer" name="writer">
 		<input type="hidden" value="<%=name%>" id="writer_name" name="writer_name">
 		<button class="btn btn-primary" type="button" onclick="history.back()">취소</button>
 		<input class="btn btn-primary" type="reset" value="초기화">
-		<button class="btn btn-primary" type="button" onclick="insertCheck_post()">등록</button>
+		<button class="btn btn-primary" type="button" onclick="modifyCheck_post()">수정</button>
 	</div>
+	<input type="hidden" id="b_no" name="b_no" value="<%=b_no%>">
 </form>
 </body>
 </html>

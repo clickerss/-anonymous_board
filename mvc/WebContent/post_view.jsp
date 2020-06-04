@@ -56,11 +56,14 @@ dao.updateVw(b_no, id);
 </style>
 <script type="text/javascript">
 var id = "<%=session.getAttribute("id")%>";
+
 window.onload = function() {
 	if(id == "null"){
 		$("#cmt").attr("placeholder", "댓글은 로그인 후 작성 가능합니다.")
 		$("#cmt").attr("disabled",true);
 		$("#cmt_submit").attr("disabled",true);
+		$("#modify").hide();
+		$("#delete").hide();
 	}
 }
 
@@ -157,6 +160,11 @@ function delete_post() {
 		}
 	});
 }
+
+function modify_post() {
+	document.modifyHiddenForm.action = "modify_post.jsp";
+	document.modifyHiddenForm.submit();
+}
 </script> 
 </head>
 <body>
@@ -175,10 +183,10 @@ function delete_post() {
         <a class="nav-link" href="board.jsp">게시판</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">내 정보</a>
+        <a class="nav-link" href="myPage.jsp">내 정보</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        <a class="nav-link disabled" href="explanation.jsp">사이트 설명</a>
       </li>
     </ul>
   </div>
@@ -214,7 +222,7 @@ if(name == null){
 </div>
 <hr style="margin-top: 1px">
 <div align="right" style="margin-right: 10px">
-	<button class="btn btn-outline-secondary btn-sm" id="modify"><font class="ng">수정</font></button>
+	<button class="btn btn-outline-secondary btn-sm" id="modify" onclick="modify_post()"><font class="ng">수정</font></button>
 	<button class="btn btn-outline-secondary btn-sm" id="delete" onclick="delete_post()"><font class="ng">삭제</font></button>
 	<button class="btn btn-outline-secondary btn-sm"><font class="ng">목록</font></button>
 	<button class="btn btn-primary btn-sm" onclick="location.href = 'insert_post.jsp'"><font class="ng">글쓰기</font></button>
@@ -323,6 +331,11 @@ if(name == null){
 <form id="hiddenForm">
 	<input type="hidden" value=<%=b_no_ajax%> id="b_no" name="b_no">
 	<input type="hidden" value=<%=id%> id="id" name="id">
+</form>
+<form id="modifyHiddenForm" name="modifyHiddenForm" method="post" accept-charset="UTF-8">
+	<input type="hidden" value=<%=dto.getB_no()%> id="b_no" name="b_no">
+	<input type="hidden" value=<%=dto.getTitle()%> id="title" name="title">
+	<input type="hidden" value=<%=dto.getContents()%> id="contents" name="contents">
 </form>
 </body>
 </html>

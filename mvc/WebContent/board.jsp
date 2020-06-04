@@ -161,10 +161,10 @@ function login_check() {
         <a class="nav-link" href="board.jsp">게시판</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">내 정보</a>
+        <a class="nav-link" href="myPage.jsp">내 정보</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        <a class="nav-link disabled" href="explanation.jsp">사이트 설명</a>
       </li>
     </ul>
   </div>

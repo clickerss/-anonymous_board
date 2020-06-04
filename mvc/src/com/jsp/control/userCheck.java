@@ -42,6 +42,7 @@ public class userCheck extends HttpServlet {
 		
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pwd");
+		System.out.println("usercheck 왔음");
 		System.out.println(id);
 		System.out.println(pwd);
 		UserDAOImpl dao = new UserDAOImpl();

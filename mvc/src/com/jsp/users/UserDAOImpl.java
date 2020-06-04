@@ -184,6 +184,134 @@ public class UserDAOImpl implements UsersDAO{
 		return isdup;
 	}
 
+	@Override
+	public int countLk(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count=0;
+		System.out.println("getCount 왓음");	
+		try {
+			conn = dataSource.getConnection();
+			String sql = "select count(*) from liketable where id= ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();			
+			if(rs.next()) {
+				count = rs.getInt(1);	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return count;
+	}
+
+	@Override
+	public int countUnlk(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count=0;
+		System.out.println("getCount 왓음");	
+		try {
+			conn = dataSource.getConnection();
+			String sql = "select count(*) from unliketable where id= ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();			
+			if(rs.next()) {
+				count = rs.getInt(1);	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return count;
+	}
+
+	@Override
+	public int countCmt(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count=0;
+		System.out.println("getCount 왓음");	
+		try {
+			conn = dataSource.getConnection();
+			String sql = "select sum(cmt) from board_all ba where writer = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();			
+			if(rs.next()) {
+				count = rs.getInt(1);	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return count;
+	}
+
+	@Override
+	public void modifyUser(String id, String name, String pwd, String email, String sex) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		System.out.println("insertUser 까지 왔음");
+		
+		try {
+			System.out.println("try 구문까지 왔음");
+			conn = dataSource.getConnection();
+			System.out.println("연결이 된건가"+conn);
+			String sql = "update users \r\n" + 
+					"set name = ?, email = ?, sex = ?, PWD  = SHA2(?, 224) \r\n" + 
+					"where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, email);
+			pstmt.setString(3, sex);
+			pstmt.setString(4, pwd);
+			pstmt.setString(5, id);
+			int rs = pstmt.executeUpdate();
+			System.out.println("excuteUpdate 까지 왔음");
+			if(rs > 0) {
+				System.out.println("정보수정 성공");
+			} else {
+				System.out.println("정보수정 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
 	
 
 }

@@ -31,6 +31,7 @@ public class send extends HttpServlet {
 		
 		resp.setContentType("text/html; charset=UTF-8");
 		req.setCharacterEncoding("UTF-8");
+		String url = req.getParameter("url");
 		
 		Properties props = System.getProperties();
 		props.put("mail.smtp.user", "ehowl0402@gmail.com");
@@ -96,7 +97,7 @@ public class send extends HttpServlet {
 		}
 		
 		
-		RequestDispatcher rd = req.getRequestDispatcher("/email_check.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/"+url);
 		rd.forward(req, resp);
 		
 	}

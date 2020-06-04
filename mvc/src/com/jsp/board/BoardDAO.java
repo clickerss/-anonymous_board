@@ -11,7 +11,7 @@ public interface BoardDAO {
 	public void insertPost(String title, String contents, String writer, String writer_name);
 	public void insertCmt(int b_no, String writer, String writer_name, String content);
 	public boolean deletePost(int b_no, String writer);
-	public void modifyPost(int b_no);
+	public void modifyPost(int b_no, String title, String contents);
 	public List<BoardDTO> getPost_all(int now_pg, int pgPerBlock);
 	public List<commentDTO> getCmt(int b_no);
 	public int getCount();
@@ -22,6 +22,7 @@ public interface BoardDAO {
 	public int countUnlk(int b_no);
 	public int countVw(int b_no);
 	public BoardDTO getPost_bno(int b_no);
+	public List<BoardDTO> getPost_writer(String writer);
 	public List<BoardDTO> getPost_title(String title);
 	public List<BoardDTO> getPost_writerName(String writer_name);
 	

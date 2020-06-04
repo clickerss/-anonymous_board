@@ -39,8 +39,8 @@
 		var checked = document.getElementById('code_check_result').value;
 		
 		if(checked==1){
-			alert("가입 축하드립니다! 메인페이지로 이동됩니다.")
-			document.emailCheckForm.action = "joinOK.jsp";
+			alert("수정 완료! 메인페이지로 이동합니다 재로그인 부탁드립니다.")
+			document.emailCheckForm.action = "modifyOK_user.jsp";
 			document.emailCheckForm.submit();
 		} else{
 			alert("이메일 인증을 하지 않으셨습니다. 이메일 인증 먼저 부탁드립니다!");
@@ -55,7 +55,7 @@
 <%
 	String id = request.getParameter("id");
 	String name = request.getParameter("name");
-	String pw = request.getParameter("pw");
+	String pwd = request.getParameter("pwd");
 	String email = request.getParameter("email");
 	String sex = request.getParameter("sex");
 	String code = (String)request.getAttribute("code");
@@ -63,8 +63,8 @@
 %>
 <div class="jumbotron jumbotron-fluid" align="center">
   <div class="container">
-    <h1 class="display-4">회원가입</h1>
-    <p class="lead">익명게시판에 오신것을 환영합니다!</p>
+    <h1 class="display-4">이메일 인증</h1>
+    <p class="lead">정보 수정을 위해 이메일인증을 진행 부탁드립니다.</p>
   </div>
 </div>
 <div style="margin: 30px; padding-left: 30px; padding-right: 30px">
@@ -84,7 +84,7 @@
 		  
 		  <input type="hidden" value="<%=id%>" id="id" name="id">
 		  <input type="hidden" value="<%=name%>" id="name" name="name">
-		  <input type="hidden" value="<%=pw%>" id="pw" name="pw">
+		  <input type="hidden" value="<%=pwd%>" id="pwd" name="pwd">
 		  <input type="hidden" value="<%=email%>" id="email" name="email">
 		  <input type="hidden" value="<%=sex%>" id="sex" name="sex">
 		  <input type="hidden" value="<%=code%>" id="code" name="code">
@@ -97,8 +97,8 @@
 	  <hr>
 	  <div class="form-group">
 	  <input type="hidden" value="0" id="code_check_result">
-	  <input type="hidden" value="email_check.jsp" id="url" name="url">
-	  <button type="button" class="btn btn-primary btn-block" onclick="check2()">가입완료</button>
+	  <input type="hidden" value="email_check_modify.jsp" id="url" name="url">
+	  <button type="button" class="btn btn-primary btn-block" onclick="check2()">수정 완료</button>
 	  </div>	  
 	</form>
 </div>

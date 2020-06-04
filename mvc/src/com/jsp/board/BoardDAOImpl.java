@@ -93,8 +93,39 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public void modifyPost(int b_no) {
-
+	public void modifyPost(int b_no, String title, String contents) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		System.out.println("insertPost 까지 왔음");
+		
+		try {
+			System.out.println("try 구문까지 왔음");
+			conn = dataSource.getConnection();
+			System.out.println("연결이 된건가"+conn);
+			String sql = "update board \r\n" + 
+					"set title = ?, contents = ?\r\n" + 
+					"where b_no = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, contents);
+			pstmt.setInt(3, b_no);
+			int rs = pstmt.executeUpdate();
+			System.out.println("excuteUpdate 까지 왔음");
+			if(rs > 0) {
+				System.out.println("글수정 성공");
+			} else {
+				System.out.println("글수정  실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 		
 	}
 
@@ -540,6 +571,58 @@ public class BoardDAOImpl implements BoardDAO{
 				dto.setWriter_name(writer_name);
 				dto.setC_date(c_date);
 				dto.setC_no(c_no);
+				
+				list.add(dto);				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<BoardDTO> getPost_writer(String writer) {
+		Connection conn = null;		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardDTO> list = new ArrayList<>();
+		System.out.println("getPast_writer 왓음");
+		SimpleDateFormat transFomat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		try {
+			conn = dataSource.getConnection();
+			//String sql = "select b_no, title, contents, writer_name, b_date, likes, unlikes from board order by b_no desc";
+			String sql = "select * from board_all where writer = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, writer);
+			rs = pstmt.executeQuery();			
+			while(rs.next()) {
+				BoardDTO dto = new BoardDTO();
+				int b_no = rs.getInt("b_no");
+				String title = rs.getString("title");
+				String contents = rs.getString("contents");
+				System.out.println(contents);
+				String writer_name = rs.getString("writer_name");
+				Date b_date = transFomat.parse(rs.getString("b_date"));
+				int likes = rs.getInt("cnt_lk");
+				int unlikes = rs.getInt("cnt_unlk");
+				int cmt = rs.getInt("cmt");
+				
+				dto.setB_no(b_no);
+				dto.setTitle(title);
+				dto.setContents(contents);
+				dto.setWriter_name(writer_name);
+				dto.setB_date(b_date);
+				dto.setLikes(likes);
+				dto.setUnlikes(unlikes);
+				dto.setCmt(cmt);
 				
 				list.add(dto);				
 			}
