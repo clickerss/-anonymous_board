@@ -37,7 +37,7 @@ dao.updateVw(b_no, id);
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>부트스트랩 기본 틀</title>
+<title>익명게시판</title>
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
@@ -56,12 +56,17 @@ dao.updateVw(b_no, id);
 </style>
 <script type="text/javascript">
 var id = "<%=session.getAttribute("id")%>";
+var writer = "<%= dto.getWriter()%>";
 
 window.onload = function() {
 	if(id == "null"){
 		$("#cmt").attr("placeholder", "댓글은 로그인 후 작성 가능합니다.")
 		$("#cmt").attr("disabled",true);
 		$("#cmt_submit").attr("disabled",true);
+		$("#modify").hide();
+		$("#delete").hide();
+	}
+	if(id != writer){
 		$("#modify").hide();
 		$("#delete").hide();
 	}
@@ -143,22 +148,24 @@ function update_unlike() {
 }
 
 function delete_post() {
-	confirm("정말 삭제하시겠습니까?");
-	$.ajax({
-		type : "post",
-		url : "deletePost",
-		cache : false,
-		data : $("#hiddenForm").serialize(),
-		success : function(data){
-			alert("ajax 성공")
-			if(data == "true"){
-				alert("삭제성공")
-				location.replace("board.jsp")
-			}else{
-				alert("삭제실패")
+	if (confirm("정말 삭제하시겠습니까?") == true){
+		$.ajax({
+			type : "post",
+			url : "deletePost",
+			cache : false,
+			data : $("#hiddenForm").serialize(),
+			success : function(data){
+				if(data == "true"){
+					alert("삭제성공")
+					location.replace("board.jsp")
+				}else{
+					alert("삭제실패")
+				}
 			}
-		}
-	});
+		});
+	} else{
+		return false;
+	}
 }
 
 function modify_post() {
@@ -169,6 +176,27 @@ function modify_post() {
 </head>
 <body>
 
+<% 
+StringBuilder sb = new StringBuilder();
+StringBuilder sb2 = new StringBuilder();
+if(name == null){
+	sb.append("<div id=\"login\">");
+	sb.append("<button class=\"btn btn-outline-primary\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">로그인</button>");
+	sb.append("</div>");
+	sb2.append("<li class=\"nav-item\">");
+	sb2.append("<a class=\"nav-link\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">내정보</a>");
+	sb2.append("</li>");
+}else{
+	sb.append("<div id=\"logout\">");
+	sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
+	sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
+	sb.append("</div>");
+	sb2.append("<li class=\"nav-item\">");
+	sb2.append("<a class=\"nav-link\" href=\"myPage.jsp\">내 정보</a>");
+	sb2.append("</li>");
+}
+
+%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand ng" href="#"><b>익명 게시판</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -182,29 +210,13 @@ function modify_post() {
       <li class="nav-item">
         <a class="nav-link" href="board.jsp">게시판</a>
       </li>
+      <%=sb2 %>
       <li class="nav-item">
-        <a class="nav-link" href="myPage.jsp">내 정보</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="explanation.jsp">사이트 설명</a>
+        <a class="nav-link" href="explanation.jsp">사이트 설명</a>
       </li>
     </ul>
   </div>
 </nav>
-<% 
-StringBuilder sb = new StringBuilder();
-if(name == null){
-	sb.append("<div id=\"login\">");
-	sb.append("<button class=\"btn btn-outline-primary\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">로그인</button>");
-	sb.append("</div>");
-}else{
-	sb.append("<div id=\"logout\">");
-	sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
-	sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
-	sb.append("</div>");
-}
-
-%>
 
 <div align="right" style="margin-right: 10px" id="login_logout_button">
 	<%=sb %>
@@ -224,7 +236,7 @@ if(name == null){
 <div align="right" style="margin-right: 10px">
 	<button class="btn btn-outline-secondary btn-sm" id="modify" onclick="modify_post()"><font class="ng">수정</font></button>
 	<button class="btn btn-outline-secondary btn-sm" id="delete" onclick="delete_post()"><font class="ng">삭제</font></button>
-	<button class="btn btn-outline-secondary btn-sm"><font class="ng">목록</font></button>
+	<button class="btn btn-outline-secondary btn-sm" onclick="location.href = 'board.jsp'"><font class="ng">목록</font></button>
 	<button class="btn btn-primary btn-sm" onclick="location.href = 'insert_post.jsp'"><font class="ng">글쓰기</font></button>
 </div>
 <pre class="jg" style="white-space: pre-wrap; margin-left: 20px">
@@ -333,9 +345,9 @@ if(name == null){
 	<input type="hidden" value=<%=id%> id="id" name="id">
 </form>
 <form id="modifyHiddenForm" name="modifyHiddenForm" method="post" accept-charset="UTF-8">
-	<input type="hidden" value=<%=dto.getB_no()%> id="b_no" name="b_no">
-	<input type="hidden" value=<%=dto.getTitle()%> id="title" name="title">
-	<input type="hidden" value=<%=dto.getContents()%> id="contents" name="contents">
+	<input type="hidden" value="<%=dto.getB_no()%>" id="b_no" name="b_no">
+	<input type="hidden" value="<%=dto.getTitle()%>" id="title" name="title">
+	<input type="hidden" value="<%=dto.getContents()%>" id="contents" name="contents">
 </form>
 </body>
 </html>

@@ -10,7 +10,7 @@ String name = (String)session.getAttribute("name");
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>부트스트랩 기본 틀</title>
+<title>익명게시판</title>
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
@@ -70,14 +70,14 @@ function login_check() {
 	
 	%>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="up">
-	  <a class="navbar-brand ng" href="#"><b>익명 게시판</b></a>
+	  <a class="navbar-brand ng" href="login_main.jsp"><b>익명 게시판</b></a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarNav">
 	    <ul class="navbar-nav">
 	      <li class="nav-item active">
-	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	        <a class="nav-link" href="login_main.jsp">Home <span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="board.jsp">게시판</a>

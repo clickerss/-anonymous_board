@@ -11,7 +11,7 @@ if(request.getProtocol().equals("HTTP/1.1"))
 	response.setHeader("Cache-Control","no-cache");
 %>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>익명게시판</title>
 </head>
 <body>
 <%

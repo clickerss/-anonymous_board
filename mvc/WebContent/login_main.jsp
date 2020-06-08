@@ -10,7 +10,7 @@ String name = (String)session.getAttribute("name");
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>부트스트랩 기본 틀</title>
+<title>익명게시판</title>
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
@@ -84,7 +84,7 @@ function login_check() {
 	      </li>
 	      <%=sb2 %>
 	      <li class="nav-item">
-	        <a class="nav-link disabled" href="explanation.jsp">사이트 설명</a>
+	        <a class="nav-link" href="explanation.jsp">사이트 설명</a>
 	      </li>
 	    </ul>
 	  </div>

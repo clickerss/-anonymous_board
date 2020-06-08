@@ -23,7 +23,7 @@ String contents = request.getParameter("contents");
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>부트스트랩 기본 틀</title>
+<title>익명게시판</title>
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css" rel="stylesheet">
 <link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
@@ -94,7 +94,27 @@ function modifyCheck_post() {
 </script> 
 </head>
 <body>
+<% 
+StringBuilder sb = new StringBuilder();
+StringBuilder sb2 = new StringBuilder();
+if(name == null){
+	sb.append("<div id=\"login\">");
+	sb.append("<button class=\"btn btn-outline-primary\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">로그인</button>");
+	sb.append("</div>");
+	sb2.append("<li class=\"nav-item\">");
+	sb2.append("<a class=\"nav-link\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">내정보</a>");
+	sb2.append("</li>");
+}else{
+	sb.append("<div id=\"logout\">");
+	sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
+	sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
+	sb.append("</div>");
+	sb2.append("<li class=\"nav-item\">");
+	sb2.append("<a class=\"nav-link\" href=\"myPage.jsp\">내 정보</a>");
+	sb2.append("</li>");
+}
 
+%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand ng" href="#"><b>익명 게시판</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,29 +128,13 @@ function modifyCheck_post() {
       <li class="nav-item">
         <a class="nav-link" href="board.jsp">게시판</a>
       </li>
+      <%=sb2 %>
       <li class="nav-item">
-        <a class="nav-link" href="myPage.jsp">내 정보</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="explanation.jsp">사이트 설명</a>
+        <a class="nav-link" href="explanation.jsp">사이트 설명</a>
       </li>
     </ul>
   </div>
 </nav>
-<% 
-StringBuilder sb = new StringBuilder();
-if(name == null){
-	sb.append("<div id=\"login\">");
-	sb.append("<button class=\"btn btn-outline-primary\" data-target=\"#layerpop\" data-toggle=\"modal\" id=\"login_button\">로그인</button>");
-	sb.append("</div>");
-}else{
-	sb.append("<div id=\"logout\">");
-	sb.append("<small class=\"text-muted jg\"><b>"+name+"</b>님 반갑습니다!</small>");
-	sb.append("<a class=\"btn btn-default\" href=\"./logout.jsp\" id=\"logout_button\"><span class=\"badge badge-secondary\">로그아웃</span></a>");
-	sb.append("</div>");
-}
-
-%>
 
 <div align="right" style="margin-right: 10px" id="login_logout_button">
 	<%=sb %>

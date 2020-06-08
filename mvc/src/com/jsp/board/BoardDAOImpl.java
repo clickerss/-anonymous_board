@@ -230,6 +230,7 @@ public class BoardDAOImpl implements BoardDAO{
 				String title = rs.getString("title");
 				String contents = rs.getString("contents");
 				String writer_name = rs.getString("writer_name");
+				String writer = rs.getString("writer");
 				Date b_date = transFomat.parse(rs.getString("b_date"));
 				int vw = rs.getInt("vw");
 				int cmt = rs.getInt("cmt");
@@ -239,6 +240,7 @@ public class BoardDAOImpl implements BoardDAO{
 				dto.setB_no(b_no);
 				dto.setTitle(title);
 				dto.setContents(contents);
+				dto.setWriter(writer);
 				dto.setWriter_name(writer_name);
 				dto.setB_date(b_date);
 				dto.setCmt(cmt);
